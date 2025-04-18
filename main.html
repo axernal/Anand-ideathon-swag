@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Anand-Ideathon-digtal-swag</title>
+  <link rel="stylesheet" href="design.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600&display=swap" rel="stylesheet">
+
+</head>
+<body>
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+        <img src="logo.png" alt="Logo" style="max-width: 190px; margin-left: 4px;" />
+        <img src="logo2.png" alt="Logo2" style="max-width: 70px; margin-right: 4px;" />
+    </div>
+      
+    <h1 >ANAND IDEATHON </h1>
+  <h1 style="font-family: Georgia "> Digital Swag</h1>
+  <div class="controls">
+    <label>Upload Your Photo</label>
+    <input type="file" id="photoUpload" accept="image/*" />
+
+    <label>Enter Your Name</label>
+    <input type="text" id="personName" placeholder="Your Name Here" />
+
+    <div>
+      <button class="btn" onclick="generatePoster()">Generate</button>
+      <button class="btn" onclick="downloadPoster()">Download</button>
+      <label style="color: black;">Your privacy matters! We never store your images.</label>
+    </div>
+  </div>
+  <div textcolor="">
+    <label>
+        Template 👇
+    </label>
+  </div>
+
+  <canvas id="posterCanvas" width="768" height="1152"></canvas>
+
+  <script>
+    const canvas = document.getElementById("posterCanvas");
+    const ctx = canvas.getContext("2d");
+
+    const templateImg = new Image();
+    templateImg.src = "frame.png"; // Replace with your uploaded frame
+    let isTemplateLoaded = false;
+
+    templateImg.onload = () => {
+      isTemplateLoaded = true;
+      ctx.drawImage(templateImg, 0, 0, canvas.width, canvas.height);
+    };
+
+    function generatePoster() {
+      const photoInput = document.getElementById("photoUpload");
+      const personName = document.getElementById("personName").value;
+
+      const photoFile = photoInput.files[0];
+      if (!photoFile || !personName.trim()) {
+        alert("Please upload your photo and enter your name.");
+        return;
+      }
+
+      if (!isTemplateLoaded) {
+        alert("Template is still loading. Please wait a moment.");
+        return;
+      }
+
+      const reader = new FileReader();
+      reader.onload = function (e) {
+        const photoImg = new Image();
+        photoImg.onload = function () {
+          ctx.clearRect(0, 0, canvas.width, canvas.height);
+          ctx.drawImage(templateImg, 0, 0, canvas.width, canvas.height);
+
+          // Position and size for the photo area (adjust to match your frame layout)
+          const photoX = 185;
+          const photoY = 325;
+          const photoWidth = 400;
+          const photoHeight = 400;
+
+          ctx.drawImage(photoImg, photoX, photoY, photoWidth, photoHeight);
+
+          // Draw the name
+          ctx.font = "bold 36px Segoe UI";
+          ctx.fillStyle = "#000";
+          ctx.textAlign = "center";
+          ctx.fillText(personName, canvas.width / 2, 0);
+        };
+        photoImg.src = e.target.result;
+      };
+      reader.readAsDataURL(photoFile);
+    }
+
+    function downloadPoster() {
+      const link = document.createElement("a");
+      link.download = "ANAND_IDEATHON_Poster.png";
+      link.href = canvas.toDataURL();
+      link.click();
+    }
+  </script>
+  <footer style="margin-top: 30px; font-size: 12px; color: #ccc;">
+    © Designed by Ritwik Kumar
+  </footer>
+  
+  
+<script src="script.js"></script>
+</body>
+</html>
