@@ -44,7 +44,7 @@ function generatePoster() {
       ctx.drawImage(templateImg, 0, 0, canvas.width, canvas.height);
 
       // Draw the name 
-      ctx.font = "bold 46px 'Pacifico'";
+      ctx.font = "bold 46px 'Pacifico', cursive";
       ctx.fillStyle = "#000";
       ctx.textAlign = "center";
       ctx.fillText(personName, canvas.width / 2, 1020);
